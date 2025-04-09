@@ -884,7 +884,6 @@
             'お顔全体': 60,
             '男性ヒゲ': 60,
             'シンプルプラン': 60,
-            '付け放題プラン': 60,
             '付け放題プラン': 60
         };
 
@@ -1435,16 +1434,16 @@
                         continue;
                     }
 
-                    // 18時以降に終了する予約を不可にする (17:30は可)
-                    if (slotEnd.getHours() === 16 && slotEnd.getMinutes() > 30) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                        continue;
-                    } else if (slotEnd.getHours() > 16) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                        continue;
-                    }
+// 16時30分以降に終了する予約を不可にする（16:00〜16:29は可）
+if (slotEnd.getHours() === 16 && slotEnd.getMinutes() >= 30) {
+    cell.textContent = '✕';
+    cell.classList.add('unavailable');
+    continue;
+} else if (slotEnd.getHours() > 16) {
+    cell.textContent = '✕';
+    cell.classList.add('unavailable');
+    continue;
+}
 
                     // ここで終了時間を使った条件処理を行う
                     // 例えば、リアルタイムで既に過ぎた時間帯は×にする
