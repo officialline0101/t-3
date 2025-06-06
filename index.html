@@ -728,30 +728,15 @@
 }
 
 #selected-menus-display {
-    display: none;
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #ffffff;
-    border: 2px solid #00b08b;        /* 全体枠の色 */
-    border-radius: 12px;              /* 角の丸み */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 影で浮かせる */
-    font-size: 15px;
-    color: #222;
-    font-weight: 500;
-    line-height: 1.6;
-    animation: fadeIn 0.4s ease-in-out;
-    word-break: break-word;
-    box-sizing: border-box;
-    position: relative;
+    /* 既存のスタイルに追加でOK */
+    text-align: center;
 }
 
-
 #selected-menus-display::before {
-    content: "選択中のメニュー\A（最大3つまで）";
-    display: block;
-    white-space: pre; /* \Aを改行として表示 */
-    width: 100%;
-    font-size: 17px;
+    content: "選択中のメニュー（最大3つまで）";
+    display: block; /* blockに変更して横幅いっぱいに */
+    width: 100%; /* 親要素に合わせて横幅を指定 */
+    font-size: 16px;
     font-weight: bold;
     padding: 12px 16px;
     background-color: #00b08b;
@@ -760,8 +745,8 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     margin-bottom: 16px;
-    text-align: center;
-    box-sizing: border-box;
+    text-align: center; /* テキストを中央に */
+    box-sizing: border-box; /* padding含めて100%幅に */
 }
 
 #selected-menus-display .menu-items-wrapper {
