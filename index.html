@@ -925,7 +925,7 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             liff.init({
-                liffId: '2007227233-Wkxq2a4o'
+                liffId: '2005254357-zKma9BZk'
             }).then(() => {
                 console.log('LIFF初期化成功');
             }).catch((err) => {
@@ -1235,16 +1235,16 @@
             // 移動させる
             button.parentNode.insertBefore(document.getElementById("treatment-text"), button.nextSibling);
 
-// メニュー名一覧を表示（✕ボタン付き）
-const selectedMenusDisplay = document.getElementById("selected-menus-display");
-if (selectedSymptom && selectedSymptom.length > 0) {
-selectedMenusDisplay.innerHTML = `【選択中のメニュー(最大3つまで)】<br>` +
-    selectedSymptom.map((item, index) =>
-        `<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-            <span>《${item.category}》${item.name}</span>
-            <button class="remove-button" onclick="removeSymptom(${index})">✕</button>
-        </div>`
-    ).join('');
+    // 4. 表示もすぐに更新（←これが重要）
+    const selectedMenusDisplay = document.getElementById("selected-menus-display");
+    if (selectedSymptom.length > 0) {
+        selectedMenusDisplay.innerHTML = `【選択中のメニュー(最大3つまで)】<br>` +
+            selectedSymptom.map(item =>
+                `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <span>《${item.category}》${item.name}</span>
+                    <button class="remove-button" data-category="${item.category}" data-name="${item.name}" onclick="removeSymptom(this)">✕</button>
+                </div>`
+            ).join('');
 
     selectedMenusDisplay.style.display = 'block';
 } else {
@@ -1257,23 +1257,22 @@ selectedMenusDisplay.innerHTML = `【選択中のメニュー(最大3つまで)�
             updateDisplayInfo();
         }
 
-function removeSymptom(indexToRemove) {
-    // ボタンのclass "active" を外す
-    const activeButtons = document.querySelectorAll('.symptoms button.active');
-    const targetSymptom = selectedSymptom[indexToRemove];
-    
-    activeButtons.forEach(btn => {
-        const btnCategory = btn.getAttribute('data-category');
-        const btnName = btn.textContent;
-        if (btnCategory === targetSymptom.category && btnName === targetSymptom.name) {
+function removeSymptom(button) {
+    const category = button.getAttribute('data-category');
+    const name = button.getAttribute('data-name');
+
+    // active を外す
+    const buttons = document.querySelectorAll('.symptoms button');
+    buttons.forEach(btn => {
+        if (btn.textContent === name && btn.getAttribute('data-category') === category) {
             btn.classList.remove('active');
         }
     });
 
-    // 配列から削除
-    selectedSymptom.splice(indexToRemove, 1);
+    // selectedSymptom から削除
+    selectedSymptom = selectedSymptom.filter(item => !(item.category === category && item.name === name));
 
-    // メニュー時間と価格を再計算
+    // 時間と価格を再計算
     selectedMenuTime = 0;
     menuPrice = 0;
     selectedSymptom.forEach(item => {
@@ -1286,37 +1285,27 @@ function removeSymptom(indexToRemove) {
         }
     });
 
-    // 表示更新
+    updateSelectedMenusDisplay();
     updateDisplayInfo();
-    selectSymptomDummy(); // 表示だけ再描画
 }
 
-// 表示だけ更新するダミー関数（activeボタンの内容で selectedSymptom を再構築）
-function selectSymptomDummy() {
-    const updatedSelectedButtons = document.querySelectorAll('.symptoms button.active');
-    selectedSymptom = [];
-    updatedSelectedButtons.forEach((btn) => {
-        const selectedMenuName = btn.textContent;
-        const category = btn.getAttribute('data-category');
-        selectedSymptom.push({ category, name: selectedMenuName });
-    });
-
-const selectedMenusDisplay = document.getElementById("selected-menus-display");
-if (selectedSymptom.length > 0) {
-    selectedMenusDisplay.innerHTML = `【選択中のメニュー(最大3つまで)】<br>` +
-        selectedSymptom.map((item, index) =>
-            `<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                <span>・《${item.category}》${item.name}</span>
-                <button class="remove-button" style="margin-left: 8px;" onclick="removeSymptom(${index})">✕</button>
-            </div>`
-        ).join('');
-    selectedMenusDisplay.style.display = 'block';
-} else {
-    selectedMenusDisplay.innerHTML = '';
-    selectedMenusDisplay.style.display = 'none';
+// メニュー表示エリアを selectedSymptom に基づいて更新
+function updateSelectedMenusDisplay() {
+    const selectedMenusDisplay = document.getElementById("selected-menus-display");
+    if (selectedSymptom.length > 0) {
+        selectedMenusDisplay.innerHTML = `【選択中のメニュー(最大3つまで)】<br>` +
+            selectedSymptom.map(item =>
+                `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <span>《${item.category}》${item.name}</span>
+                    <button class="remove-button" data-category="${item.category}" data-name="${item.name}" onclick="removeSymptom(this)">✕</button>
+                </div>`
+            ).join('');
+        selectedMenusDisplay.style.display = 'block';
+    } else {
+        selectedMenusDisplay.innerHTML = '';
+        selectedMenusDisplay.style.display = 'none';
+    }
 }
-}
-
         function selectirradiations(button) {
             // 選択された日時をリセット
             selectedFullDate = '';
@@ -1377,47 +1366,44 @@ if (selectedSymptom.length > 0) {
             fetchAvailability(currentDate);
         }
 
-        function showMenu(menu) {
-            // `treatment-text` を非表示にする
-            document.getElementById("treatment-text").style.display = "none";
+function showMenu(menu) {
+    document.getElementById("treatment-text").style.display = "none";
 
-            // 選択されたメニューの名前を取得
-            let selectedButton = document.querySelector(`.menu-sections button[onclick="showMenu('${menu}')"]`);
-            if (selectedButton) {
-                selectedMenu = selectedButton.innerText;
-            }
+    const selectedButton = document.querySelector(`.menu-sections button[onclick="showMenu('${menu}')"]`);
+    if (selectedButton) {
+        selectedMenu = selectedButton.innerText;
+    }
 
-            // すべてのメニューボタンの選択状態をリセット
-            document.querySelectorAll('.menu-sections button').forEach(button => {
-                button.classList.remove('active');
-            });
+    // メニュータブのボタン状態更新
+    document.querySelectorAll('.menu-sections button').forEach(button => {
+        button.classList.remove('active');
+    });
+    if (selectedButton) {
+        selectedButton.classList.add('active');
+    }
 
-            // 選択されたメニューセクションを表示
-            document.querySelectorAll('.menu-section').forEach(section => {
-                section.classList.remove('active');
-            });
+    // メニュー表示の切り替え
+    document.querySelectorAll('.menu-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    document.getElementById(menu).classList.add('active');
 
-            // 対応するメニューボタンを選択状態にする
-            if (selectedButton) {
-                selectedButton.classList.add('active');
-            }
+    // 内容はリセットするが、選択内容はそのまま残す
+    document.getElementById("treatment-text").innerHTML = "";
 
-            // 選択されたメニューセクションを表示
-            document.getElementById(menu).classList.add('active');
+    // ❌ この行は削除してください（これが選択を消す原因）
+    // selectedSymptom = [];
 
-            // `treatment-text` の内容をリセット
-            document.getElementById("treatment-text").innerHTML = "";
+    // 必要な初期化だけ行う（オプションなど）
+    irradiationsCount = '';
+    menuPrice = 0;
+    optionsPrice = 0;
+    totalAmount = 0;
 
-            // メニューとオプションをリセット
-            selectedSymptom = '';      // メニューのリセット
-            irradiationsCount = '';    // オプションのリセット
-            menuPrice = 0;             // メニューの価格リセット
-            optionsPrice = 0;          // オプションの価格リセット
-            totalAmount = 0;           // 合計金額リセット
-
-            // 表示を更新
-            updateDisplayInfo();
-        }
+    // 表示更新（現在選択中メニューの描画も維持される）
+    updateSelectedMenusDisplay();
+    updateDisplayInfo();
+}
 
         function selectDate(cell) {
             // "unavailable" クラスが付いている場合はクリックを無効化
