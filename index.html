@@ -728,9 +728,23 @@
 }
 
 #selected-menus-display {
-    /* 既存のスタイルに追加でOK */
-    text-align: center;
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 2px solid #00b08b;        /* 全体枠の色 */
+    border-radius: 12px;              /* 角の丸み */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 影で浮かせる */
+    font-size: 15px;
+    color: #222;
+    font-weight: 500;
+    line-height: 1.6;
+    animation: fadeIn 0.4s ease-in-out;
+    word-break: break-word;
+    box-sizing: border-box;
+    position: relative;
 }
+
 
 #selected-menus-display::before {
     content: "選択中のメニュー（最大3つまで）";
@@ -830,7 +844,6 @@
     color: #b71c1c;
     border-color: #ef5350;
 }
-
 
         .datetime-input {
             width: 100%;
