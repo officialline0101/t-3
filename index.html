@@ -728,15 +728,30 @@
 }
 
 #selected-menus-display {
-    /* 既存のスタイルに追加でOK */
-    text-align: center;
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 2px solid #00b08b;        /* 全体枠の色 */
+    border-radius: 12px;              /* 角の丸み */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 影で浮かせる */
+    font-size: 15px;
+    color: #222;
+    font-weight: 500;
+    line-height: 1.6;
+    animation: fadeIn 0.4s ease-in-out;
+    word-break: break-word;
+    box-sizing: border-box;
+    position: relative;
 }
 
+
 #selected-menus-display::before {
-    content: "選択中のメニュー（最大3つまで）";
-    display: block; /* blockに変更して横幅いっぱいに */
-    width: 100%; /* 親要素に合わせて横幅を指定 */
-    font-size: 16px;
+    content: "選択中のメニュー\A（最大3つまで）";
+    display: block;
+    white-space: pre; /* \Aを改行として表示 */
+    width: 100%;
+    font-size: 17px;
     font-weight: bold;
     padding: 12px 16px;
     background-color: #00b08b;
@@ -745,8 +760,8 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     margin-bottom: 16px;
-    text-align: center; /* テキストを中央に */
-    box-sizing: border-box; /* padding含めて100%幅に */
+    text-align: center;
+    box-sizing: border-box;
 }
 
 #selected-menus-display .menu-items-wrapper {
@@ -1035,7 +1050,7 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             liff.init({
-                liffId: '2005254357-zKma9BZk'
+                liffId: '2007227233-Wkxq2a4o'
             }).then(() => {
                 console.log('LIFF初期化成功');
             }).catch((err) => {
