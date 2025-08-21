@@ -996,7 +996,7 @@
             </div>
         </div>
 
-        <div class="highlight-background">
+        <div class="highlight-background" id="Desireddateandtime">
             <div class="kibounitizi">希望日時<span class="required">必須</span></div>
         </div>
 
@@ -1382,7 +1382,6 @@ if (selectedSymptom.length > 0) {
     selectedMenusDisplay.style.display = 'none';
 }
 
-
             treatmentText.style.display = 'block';
 
             updateDisplayInfo();
@@ -1483,61 +1482,84 @@ function updateSelectedMenusDisplay() {
             updateDisplayInfo(); // 表示を更新
         }
 
-        function selectVisit(element) {
-            // 選択された日時をリセット
-            selectedFullDate = '';
+function selectVisit(element) {
+  // 選択された日時をリセット
+  selectedFullDate = '';
 
-            document.getElementById('firstVisit').classList.remove('active');
-            document.getElementById('repeatVisit').classList.remove('active');
-            element.classList.add('active');
-            visitCount = element.innerText;
+  document.getElementById('firstVisit').classList.remove('active');
+  document.getElementById('repeatVisit').classList.remove('active');
+  element.classList.add('active');
+  visitCount = element.innerText;
 
-            // 選択された訪問回数に対応する時間を取得
-            selectedVisitTime = visitTimes[visitCount];
+  // 選択された訪問回数に対応する時間を取得
+  selectedVisitTime = visitTimes[visitCount];
 
-            console.log('選択された訪問回数の時間:', selectedVisitTime);
+  console.log('選択された訪問回数の時間:', selectedVisitTime);
 
-            // カレンダーを更新するために取得する日付を渡す
-            fetchAvailability(currentDate);
-        }
+  // カレンダーを更新するために取得する日付を渡す
+  fetchAvailability(currentDate);
+
+  // ▼ メニュー選択へ誘導：#course までスムーズスクロール（固定ヘッダー分を考慮）
+  // レイアウト更新直後に動かすため rAF を挟んで安定化
+  requestAnimationFrame(() => {
+    scrollToSection('course', getHeaderOffset());
+  });
+}
 
 function showMenu(menu) {
-    document.getElementById("treatment-text").style.display = "none";
+  document.getElementById("treatment-text").style.display = "none";
 
-    const selectedButton = document.querySelector(`.menu-sections button[onclick="showMenu('${menu}')"]`);
-    if (selectedButton) {
-        selectedMenu = selectedButton.innerText;
-    }
+  const selectedButton = document.querySelector(`.menu-sections button[onclick="showMenu('${menu}')"]`);
+  if (selectedButton) {
+    selectedMenu = selectedButton.innerText;
+  }
 
-    // メニュータブのボタン状態更新
-    document.querySelectorAll('.menu-sections button').forEach(button => {
-        button.classList.remove('active');
-    });
-    if (selectedButton) {
-        selectedButton.classList.add('active');
-    }
+  // メニュータブのボタン状態更新
+  document.querySelectorAll('.menu-sections button').forEach(button => {
+    button.classList.remove('active');
+  });
+  if (selectedButton) {
+    selectedButton.classList.add('active');
+  }
 
-    // メニュー表示の切り替え
-    document.querySelectorAll('.menu-section').forEach(section => {
-        section.classList.remove('active');
-    });
-    document.getElementById(menu).classList.add('active');
+  // メニュー表示の切り替え
+  document.querySelectorAll('.menu-section').forEach(section => {
+    section.classList.remove('active');
+  });
+  document.getElementById(menu).classList.add('active');
 
-    // 内容はリセットするが、選択内容はそのまま残す
-    document.getElementById("treatment-text").innerHTML = "";
+  // 内容はリセットするが、選択内容はそのまま残す
+  document.getElementById("treatment-text").innerHTML = "";
 
-    // ❌ この行は削除してください（これが選択を消す原因）
-    // selectedSymptom = [];
+  // ❌ selectedSymptom は消さない（既にコメント済み）
 
-    // 必要な初期化だけ行う（オプションなど）
-    irradiationsCount = '';
-    menuPrice = 0;
-    optionsPrice = 0;
-    totalAmount = 0;
+  // 必要な初期化だけ
+  irradiationsCount = '';
+  menuPrice = 0;
+  optionsPrice = 0;
+  totalAmount = 0;
 
-    // 表示更新（現在選択中メニューの描画も維持される）
-    updateSelectedMenusDisplay();
-    updateDisplayInfo();
+  // 表示更新
+  updateSelectedMenusDisplay();
+  updateDisplayInfo();
+
+  // ここで対象セクションへスムーズスクロール（固定ヘッダー分オフセット）
+  scrollToSection(menu, getHeaderOffset());
+}
+
+// 固定ヘッダーがあるなら、その高さを返す（なければ0）
+function getHeaderOffset() {
+  // 例：ヘッダーに .fixed-header を付けている場合
+  const header = document.querySelector('.fixed-header, header[style*="position: fixed"], header.sticky');
+  return header ? header.offsetHeight : 0;
+}
+
+// 対象IDまでスムーズスクロール（オフセット考慮）
+function scrollToSection(id, offset = 0) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const y = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: y, behavior: 'smooth' });
 }
 
         function selectDate(cell) {
