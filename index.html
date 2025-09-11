@@ -135,6 +135,26 @@
             overflow: hidden;
         }
 
+.labelmenu {
+    display: block;
+    margin-bottom: 10px;
+    padding: 3px;
+    font-weight: 300;
+    background-color: #ffffff;
+    color: rgb(10, 10, 10);
+    border-radius: 6px;
+    font-size: 15px;
+    text-align: center;
+    /* 中央揃え */
+    text-indent: 0px;
+    /* テキストを右に20pxずらす */
+    position: relative;
+    overflow: hidden;
+
+    /* 追加：黒枠2px */
+    border: 0px solid #000000;
+}
+
         .labelContent {
             display: block;
             margin-top: 10px;
@@ -217,6 +237,32 @@
             background-color: #444;
             color: #fff;
         }
+
+/* リジュケアエステだけピンク */
+.menu-sections button[onclick="showMenu('rejuvenation')"] {
+  background-color: #ff78b5;   /* お好みで #ff66aa / #ff8fbf 等に調整可 */
+  border-color:   #ff78b5;
+  color: #fff;
+}
+
+/* ホバー時のちょい暗く */
+.menu-sections button[onclick="showMenu('rejuvenation')"]:hover {
+  filter: brightness(0.95);
+}
+
+/* active（選択中）時もピンクをキープ */
+.menu-sections button[onclick="showMenu('rejuvenation')"].active {
+  background-color: #e85f9f;   /* 少し濃いめ */
+  border-color:   #e85f9f;
+  color: #fff;
+}
+
+/* すでに入れている全幅指定を残したい場合はそのままでOK */
+.menu-sections button[onclick="showMenu('rejuvenation')"] {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
 
         .date-inputs input[type="datetime-local"] {
             width: calc(100% - 22px);
@@ -537,6 +583,13 @@
         }
 
         .highlight-text {
+            font-weight: bold;
+            display: inline-block;
+            color: #fff;
+            /* オプションテキストの色 */
+        }
+
+        .highlight-textmenu {
             font-weight: bold;
             display: inline-block;
             color: #fff;
@@ -922,6 +975,7 @@
             <button type="button" onclick="showMenu('mugwort')">よもぎ蒸し</button>
             <button type="button" onclick="showMenu('herbs')">ハーブピーリング</button>
             <button type="button" onclick="showMenu('facial')">フェイシャルWAX</button>
+            <button type="button" onclick="showMenu('rejuvenation')">＼新メニュー／　リジュケアエステ</button>
         </div>
 
         <!-- メニュー表示エリア（選択されたメニュー名がここに出る） -->
@@ -929,10 +983,21 @@
 
         <div id="treatment-text" style="display: none; margin-bottom: 10px;"></div>
 
+        <div id="rejuvenation" class="menu-section">
+            <div class="highlight-background">
+                <span class="highlight-text">◆リジュケアエステ◆</span>
+            </div>
+                <span class="labelmenu">▼メニューをお選びください▼</span>
+            <div class="symptoms">
+                <button type="button" onclick="selectSymptom(this, 'treatment20')" data-category="リジュケアエステ" data-price="15000">リジュケアエステ</button>
+            </div>
+        </div>
+
         <div id="release" class="menu-section">
             <div class="highlight-background">
                 <span class="highlight-text">◆新感覚!!筋膜リリース◆</span>
             </div>
+                <span class="labelmenu">▼メニューをお選びください▼</span>
             <div class="symptoms">
                 <button type="button" onclick="selectSymptom(this, 'treatment1')" data-category="新感覚!!筋膜リリース" data-price="15000">全身筋膜リリース</button>
                 <button type="button" onclick="selectSymptom(this, 'treatment2')" data-category="新感覚!!筋膜リリース" data-price="15000">コリ集中コース</button>
@@ -945,6 +1010,7 @@
             <div class="highlight-background">
                 <span class="highlight-text">◆美肌脱毛◆</span>
             </div>
+                <span class="labelmenu">▼メニューをお選びください▼</span>
             <div class="symptoms">
                 <button type="button" onclick="selectSymptom(this, 'treatment5')" data-category="美肌脱毛" data-price="15000">全身脱毛+顔+VIO</button>
                 <button type="button" onclick="selectSymptom(this, 'treatment6')" data-category="美肌脱毛" data-price="13000">全身脱毛+顔またはVIO</button>
@@ -962,6 +1028,7 @@
             <div class="highlight-background">
                 <span class="highlight-text">◆耳つぼジュエリー◆</span>
             </div>
+                <span class="labelmenu">▼メニューをお選びください▼</span>
             <div class="symptoms">
                 <button type="button" onclick="selectSymptom(this, 'treatment14')" data-category="耳つぼジュエリー" data-price="15000">シンプルプラン</button>
                 <button type="button" onclick="selectSymptom(this, 'treatment15')" data-category="耳つぼジュエリー" data-price="15000">付け放題プラン</button>
@@ -972,6 +1039,7 @@
             <div class="highlight-background">
                 <span class="highlight-text">◆よもぎ蒸し◆</span>
             </div>
+                <span class="labelmenu">▼メニューをお選びください▼</span>
             <div class="symptoms">
                 <button type="button" onclick="selectSymptom(this, 'treatment16')" data-category="よもぎ蒸し" data-price="15000">よもぎ・モリンガ蒸し</button>
             </div>
@@ -981,6 +1049,7 @@
             <div class="highlight-background">
                 <span class="highlight-text">◆ハーブピーリング◆</span>
             </div>
+                <span class="labelmenu">▼メニューをお選びください▼</span>
             <div class="symptoms">
                 <button type="button" onclick="selectSymptom(this, 'treatment17')" data-category="ハーブピーリング" data-price="15000">小顔筋膜リリース×ハーブピーリング</button>
                 <button type="button" onclick="selectSymptom(this, 'treatment33')" data-category="ハーブピーリング" data-price="15000">ハーブピーリングのみ</button>
@@ -991,6 +1060,7 @@
             <div class="highlight-background">
                 <span class="highlight-text">◆フェイシャルWAX◆</span>
             </div>
+                <span class="labelmenu">▼メニューをお選びください▼</span>
             <div class="symptoms">
                 <button type="button" onclick="selectSymptom(this, 'treatment19')" data-category="フェイシャルWAX" data-price="15000">フェイシャルWAX</button>
             </div>
@@ -1251,177 +1321,133 @@
             });
         });
 
-        function selectSymptom(button, treatmentId) {
-            // 選択された日時をリセット
-            selectedFullDate = '';
+function selectSymptom(button, treatmentId) {
+    // 選択された日時をリセット
+    selectedFullDate = '';
 
-            // クリックしたボタンの `data-id` を取得
-            let selectedId = button.getAttribute('data-id');
+    const treatmentText = document.getElementById('treatment-text');
+    const selectedMenusDisplay = document.getElementById("selected-menus-display");
+    const selectedMenuNameDiv = document.getElementById('selected-menu-name');
 
-            // クリックしたボタンがすでに `active` なら解除
-            if (button.classList.contains('active')) {
-                button.classList.remove('active');
-            } else {
-                // すでに選択されているボタンを取得（`active` のボタン）
-                let updatedSelectedButtons = document.querySelectorAll('.symptoms button.active');
+    // トグル
+    if (button.classList.contains('active')) {
+        button.classList.remove('active'); // ← 解除
+    } else {
+        const activeCount = document.querySelectorAll('.symptoms button.active').length;
+        if (activeCount >= 3) return;
+        button.classList.add('active');    // ← 選択
+    }
 
-                // もし選択数が3を超えたら、新しい選択をキャンセル
-                if (updatedSelectedButtons.length >= 3) {
-                    return;
-                }
+    // 最新状態
+    const updatedSelectedButtons = document.querySelectorAll('.symptoms button.active');
 
-                // クリックしたボタンだけ `active` を付与
-                button.classList.add('active');
-            }
+    // リセット
+    selectedMenuTime = 0;
+    selectedSymptom = [];
+    menuPrice = 0;
 
-            // 現在選択されているボタンを取得（もう一度更新）
-            let updatedSelectedButtons = document.querySelectorAll('.symptoms button.active');
-            const treatmentText = document.getElementById('treatment-text');
-            const selectedMenuNameDiv = document.getElementById('selected-menu-name');
+    // 0件ならすべて隠す
+    if (updatedSelectedButtons.length === 0) {
+        if (treatmentText) {
+            treatmentText.style.display = 'none';
+            treatmentText.innerHTML = '';
+        }
+        selectedMenusDisplay.style.display = 'none';
+        selectedMenusDisplay.innerHTML = '';
+        if (selectedMenuNameDiv) selectedMenuNameDiv.style.display = 'none';
+        return;
+    }
 
-            // メニュー時間と価格をリセット
-            selectedMenuTime = 0;
-            selectedSymptom = [];
-            menuPrice = 0;
+    // 選択済みから再計算
+    updatedSelectedButtons.forEach((btn) => {
+        const selectedMenuName = btn.textContent;
+        const category = btn.getAttribute('data-category');
+        selectedSymptom.push({ category, name: selectedMenuName });
+        selectedMenuTime += menuTimes[selectedMenuName] || 0;
+        menuPrice += parseInt(btn.getAttribute('data-price'), 10) || 0;
+    });
 
-            if (updatedSelectedButtons.length === 0) {
-                // すべてのボタンの選択が解除された場合
-                selectedMenuTime = 0;
-                selectedSymptom = null;
-                menuPrice = 0;
-            } else {
-                // 選択された各ボタンについて処理
-                updatedSelectedButtons.forEach((btn) => {
-                    const selectedMenuName = btn.textContent;
-                    const category = btn.getAttribute('data-category'); // 追加
-                    selectedSymptom.push({ category, name: selectedMenuName }); // ← 変更
-                    selectedMenuTime += menuTimes[selectedMenuName] || 0;
-                    menuPrice += parseInt(btn.getAttribute('data-price'), 10) || 0;
-                });
-            }
+    // カレンダー更新
+    if (typeof fetchAvailability === 'function') {
+        fetchAvailability(currentDate);
+    }
 
-            console.log('選択されたメニューの時間:', selectedMenuTime);
-
-            // カレンダーを更新するために取得する日付を渡す
-            fetchAvailability(currentDate);
-
+    // --- ここがポイント ---
+    // 解除クリックの場合（このボタンが非activeになった後）は詳細を表示しない
+    if (!button.classList.contains('active')) {
+        if (treatmentText) {
+            treatmentText.style.display = 'none';
+            treatmentText.innerHTML = '';
+        }
+    } else {
+        // 表示内容を treatmentId で分岐（未指定/不一致なら表示しない）
+        let html = '';
             if (treatmentId === 'treatment1') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：60分</strong><br></div><div style="text-align: right;"><strong>料金：16,500円<br>初回割引：11,100円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：60分</strong><br></div><div style="text-align: right;"><strong>料金：16,500円<br>初回割引：11,100円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment2') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：30分</strong><br></div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：30分</strong><br></div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment3') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：15分</strong><br>※ノーメイクでのご来店をお願いします</div><div style="text-align: right;"><strong>料金：5,500円<br>初回割引：3,300円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：15分</strong><br>※ノーメイクでのご来店をお願いします</div><div style="text-align: right;"><strong>料金：5,500円<br>初回割引：3,300円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment4') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：30分</strong><br>※髪の毛が濡れますのでご遠慮ください<br>ドライヤー、ブラシございます</div><div style="text-align: right;"><strong>料金：5,500円<br>初回割引：3,300円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：30分</strong><br>※髪の毛が濡れますのでご遠慮ください<br>ドライヤー、ブラシございます</div><div style="text-align: right;"><strong>料金：5,500円<br>初回割引：3,300円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment5') {
-                treatmentText.innerHTML = `<div style="text-align: left;"></div><div style="text-align: right;"><strong>料金：15,000円<br>男性：＋8,500円</strong></div>`;
+                html = `<div style="text-align: left;"></div><div style="text-align: right;"><strong>料金：15,000円<br>男性：＋8,500円</strong></div>`;
             } else if (treatmentId === 'treatment6') {
-                treatmentText.innerHTML = `<div style="text-align: left;"></div><div style="text-align: right;"><strong>料金：13,000円<br>男性：＋8,500円</strong></div>`;
+                html = `<div style="text-align: left;"></div><div style="text-align: right;"><strong>料金：13,000円<br>男性：＋8,500円</strong></div>`;
             } else if (treatmentId === 'treatment7') {
-                treatmentText.innerHTML = `<div style="text-align: left;"></div><div style="text-align: right;"><strong>料金：11,000円<br>男性：＋8,500円</strong></div>`;
+                html = `<div style="text-align: left;"></div><div style="text-align: right;"><strong>料金：11,000円<br>男性：＋8,500円</strong></div>`;
             } else if (treatmentId === 'treatment8') {
-                treatmentText.innerHTML = `<div style="text-align: left;">わき、手の指甲、足の指甲<br>へそ周り、Iライン、Oライン<br>※男性はVIOなし<br>各パーツ＋500円とさせていただきます</div><div style="text-align: right;"><strong>料金：2,000円</strong></div>`;
+                html = `<div style="text-align: left;">わき、手の指甲、足の指甲<br>へそ周り、Iライン、Oライン<br>※男性はVIOなし<br>各パーツ＋500円とさせていただきます</div><div style="text-align: right;"><strong>料金：2,000円</strong></div>`;
             } else if (treatmentId === 'treatment9') {
-                treatmentText.innerHTML = `<div style="text-align: left;">うなじ、ひじ上、ひじ下<br>お腹、胸、腰、V外、V内<br>※男性はVIOなし<br>各パーツ＋500円とさせていただきます</div><div style="text-align: right;"><strong>料金：2,500円</strong></div>`;
+                html = `<div style="text-align: left;">うなじ、ひじ上、ひじ下<br>お腹、胸、腰、V外、V内<br>※男性はVIOなし<br>各パーツ＋500円とさせていただきます</div><div style="text-align: right;"><strong>料金：2,500円</strong></div>`;
             } else if (treatmentId === 'treatment10') {
-                treatmentText.innerHTML = `<div style="text-align: left;">ひざ上、ひざ下、背中上、背中下、お尻<br>※男性はVIOなし<br>各パーツ＋500円とさせていただきます</div><div style="text-align: right;"><strong>料金：3,500円</strong></div>`;
+                html = `<div style="text-align: left;">ひざ上、ひざ下、背中上、背中下、お尻<br>※男性はVIOなし<br>各パーツ＋500円とさせていただきます</div><div style="text-align: right;"><strong>料金：3,500円</strong></div>`;
             } else if (treatmentId === 'treatment11') {
-                treatmentText.innerHTML = `<div style="text-align: left;">Vライン外、Vライン内、Iライン、Oライン</div><div style="text-align: right;"><strong>（女性のみ）<br>料金：6,500円</strong></div>`;
+                html = `<div style="text-align: left;">Vライン外、Vライン内、Iライン、Oライン</div><div style="text-align: right;"><strong>（女性のみ）<br>料金：6,500円</strong></div>`;
             } else if (treatmentId === 'treatment12') {
-                treatmentText.innerHTML = `<div style="text-align: left;">鼻下、口周り、あご下、ほほ、おでこ</div><div style="text-align: right;"><strong>料金：5,500円<br>各パーツ単品：1,500円</strong></div>`;
+                html = `<div style="text-align: left;">鼻下、口周り、あご下、ほほ、おでこ</div><div style="text-align: right;"><strong>料金：5,500円<br>各パーツ単品：1,500円</strong></div>`;
             } else if (treatmentId === 'treatment13') {
-                treatmentText.innerHTML = `<div style="text-align: left;">鼻下、口周り、あご下、ほほ、首</div><div style="text-align: right;"><strong>料金：7,500円<br>各パーツ単品：2,000円</strong></div>`;
+                html = `<div style="text-align: left;">鼻下、口周り、あご下、ほほ、首</div><div style="text-align: right;"><strong>料金：7,500円<br>各パーツ単品：2,000円</strong></div>`;
             } else if (treatmentId === 'treatment14') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：60分</strong><br>☆シンプルプラン♪お耳からかわいく健康に！<br>お耳ほぐし・ツボ押し</div><div style="text-align: right;"><strong>料金：2,500円</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：60分</strong><br>☆シンプルプラン♪お耳からかわいく健康に！<br>お耳ほぐし・ツボ押し</div><div style="text-align: right;"><strong>料金：2,500円</strong></div>`;
             } else if (treatmentId === 'treatment15') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：60分</strong><br>☆貼り放題プラン♪お耳からかわいく健康に！<br>お耳ほぐし・ツボ押し</div><div style="text-align: right;"><strong>料金：5,000円</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：60分</strong><br>☆貼り放題プラン♪お耳からかわいく健康に！<br>お耳ほぐし・ツボ押し</div><div style="text-align: right;"><strong>料金：5,000円</strong></div>`;
             } else if (treatmentId === 'treatment16') {
-                treatmentText.innerHTML = `<div style="text-align: left;">冷えから来るお悩みを一掃！！<br>ハーブテント併用で滝汗、デトックス！</div><div style="text-align: right;"><strong>料金：4,500円<br>初回割引：3,500円(税込)</strong></div>`;
+                html = `<div style="text-align: left;">冷えから来るお悩みを一掃！！<br>ハーブテント併用で滝汗、デトックス！</div><div style="text-align: right;"><strong>料金：4,500円<br>初回割引：3,500円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment17') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>贅沢ダブル施術をお得な価格でご提供<br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：18,500円<br>初回割引：12,000円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>贅沢ダブル施術をお得な価格でご提供<br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：18,500円<br>初回割引：12,000円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment18') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>ハーブのみの施術はこちら<br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：13,000円<br>初回割引：9,900円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>ハーブのみの施術はこちら<br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：13,000円<br>初回割引：9,900円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment19') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：11,000円<br>初回割引：7,700円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：11,000円<br>初回割引：7,700円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment20') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：60分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：90分</strong><br>「リジュ＝若返り」<br>細胞から元気を取り戻してハリ・ツヤ・透明感アップ<br>30代・40代・50代のお肌悩みにピッタリのエステです<br>各メニューオプション選択可能です✨</div><div style="text-align: right;"></div>`;
             } else if (treatmentId === 'treatment21') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：30分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：30分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment22') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：90分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：90分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment23') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：15分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：15分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment24') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：15分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：15分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：8,800円<br>初回割引：5,500円(税込)</strong></div>`;
             } else if (treatmentId === 'treatment33') {
-                treatmentText.innerHTML = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：9,900円</strong></div>`;
+                html = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：9,900円</strong></div>`;
             } else {
                 treatmentText.innerHTML = '';
             }
 
-            // 移動させる
-            button.parentNode.insertBefore(document.getElementById("treatment-text"), button.nextSibling);
-
-// 4. 表示もすぐに更新（←これが重要）
-const selectedMenusDisplay = document.getElementById("selected-menus-display");
-
-if (selectedSymptom.length > 0) {
-    selectedMenusDisplay.innerHTML = `
-        <div class="menu-items-wrapper">
-            ${selectedSymptom.map(item => `
-                <div class="menu-item">
-                    <span>《${item.category}》<br>${item.name}</span>
-                    <button class="remove-button" data-category="${item.category}" data-name="${item.name}" onclick="removeSymptom(this)">✕</button>
-                </div>
-            `).join('')}
-        </div>
-    `;
-    selectedMenusDisplay.style.display = 'block';
-} else {
-    selectedMenusDisplay.innerHTML = '';
-    selectedMenusDisplay.style.display = 'none';
-}
-
+        // 内容が用意できた時だけ移動＆表示
+        if (html) {
+            treatmentText.innerHTML = html;
+            button.parentNode.insertBefore(treatmentText, button.nextSibling);
             treatmentText.style.display = 'block';
-
-            updateDisplayInfo();
+        } else {
+            treatmentText.innerHTML = '';
+            treatmentText.style.display = 'none';
         }
+    }
 
-function removeSymptom(button) {
-    const category = button.getAttribute('data-category');
-    const name = button.getAttribute('data-name');
-
-    // active を外す
-    const buttons = document.querySelectorAll('.symptoms button');
-    buttons.forEach(btn => {
-        if (btn.textContent === name && btn.getAttribute('data-category') === category) {
-            btn.classList.remove('active');
-        }
-    });
-
-    // selectedSymptom から削除
-    selectedSymptom = selectedSymptom.filter(item => !(item.category === category && item.name === name));
-
-    // 時間と価格を再計算
-    selectedMenuTime = 0;
-    menuPrice = 0;
-    selectedSymptom.forEach(item => {
-        selectedMenuTime += menuTimes[item.name] || 0;
-        const btn = [...document.querySelectorAll('.symptoms button')].find(
-            b => b.textContent === item.name && b.getAttribute('data-category') === item.category
-        );
-        if (btn) {
-            menuPrice += parseInt(btn.getAttribute('data-price'), 10) || 0;
-        }
-    });
-
-    updateSelectedMenusDisplay();
-    updateDisplayInfo();
-}
-
-function updateSelectedMenusDisplay() {
-    const selectedMenusDisplay = document.getElementById("selected-menus-display");
-
+    // 選択リストの描画
     if (selectedSymptom.length > 0) {
         selectedMenusDisplay.innerHTML = `
             <div class="menu-items-wrapper">
@@ -1438,7 +1464,84 @@ function updateSelectedMenusDisplay() {
         selectedMenusDisplay.innerHTML = '';
         selectedMenusDisplay.style.display = 'none';
     }
+
+    updateDisplayInfo();
 }
+
+function removeSymptom(button) {
+    const category = button.getAttribute('data-category');
+    const name = button.getAttribute('data-name');
+
+    // 所要時間が変わるため、選択済み日時はクリア
+    selectedFullDate = '';
+
+    // 対応する元ボタンの active を外す
+    document.querySelectorAll('.symptoms button').forEach(btn => {
+        if (btn.textContent === name && btn.getAttribute('data-category') === category) {
+            btn.classList.remove('active');
+        }
+    });
+
+    // selectedSymptom から削除
+    selectedSymptom = selectedSymptom.filter(item => !(item.category === category && item.name === name));
+
+    // 残っている選択から時間と価格を再計算
+    selectedMenuTime = 0;
+    menuPrice = 0;
+    selectedSymptom.forEach(item => {
+        selectedMenuTime += menuTimes[item.name] || 0;
+        const btn = [...document.querySelectorAll('.symptoms button')].find(
+            b => b.textContent === item.name && b.getAttribute('data-category') === item.category
+        );
+        if (btn) menuPrice += parseInt(btn.getAttribute('data-price'), 10) || 0;
+    });
+
+    // カレンダーを最新の所要時間で再取得
+    if (typeof fetchAvailability === 'function') {
+        fetchAvailability(currentDate);
+    }
+
+    // 表示更新
+    updateSelectedMenusDisplay?.();
+    updateDisplayInfo?.();
+
+    // ★ 選択解除時は詳細を隠す（空ボックス残り防止）
+    const treatmentText = document.getElementById("treatment-text");
+    if (treatmentText) {
+        treatmentText.style.display = 'none';
+        treatmentText.innerHTML = '';
+    }
+
+    // 0件なら選択表示も隠す
+    if (selectedSymptom.length === 0) {
+        const selectedMenusDisplay = document.getElementById("selected-menus-display");
+        selectedMenusDisplay.style.display = 'none';
+        selectedMenusDisplay.innerHTML = '';
+        const selectedMenuNameDiv = document.getElementById('selected-menu-name');
+        if (selectedMenuNameDiv) selectedMenuNameDiv.style.display = 'none';
+    }
+}
+
+        function updateSelectedMenusDisplay() {
+            const selectedMenusDisplay = document.getElementById("selected-menus-display");
+
+            if (selectedSymptom.length > 0) {
+                selectedMenusDisplay.innerHTML = `
+            <div class="menu-items-wrapper">
+                ${selectedSymptom.map(item => `
+                    <div class="menu-item">
+                        <span>《${item.category}》<br>${item.name}</span>
+                        <button class="remove-button" data-category="${item.category}" data-name="${item.name}" onclick="removeSymptom(this)">✕</button>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+                selectedMenusDisplay.style.display = 'block';
+            } else {
+                selectedMenusDisplay.innerHTML = '';
+                selectedMenusDisplay.style.display = 'none';
+            }
+        }
 
         function selectirradiations(button) {
             // 選択された日時をリセット
